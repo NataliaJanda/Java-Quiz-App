@@ -1,4 +1,4 @@
-package com.example.javaquizzapp.controller;
+package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
 import com.example.javaquizzapp.entity.Student;
@@ -8,12 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 

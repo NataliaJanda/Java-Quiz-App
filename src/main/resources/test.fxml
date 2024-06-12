@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javaquizzapp.FXcontroller.testController">
+    <children>
+        <BorderPane />
+        <ToolBar pickOnBounds="false" prefHeight="40.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <items>
+                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="O Quizie" />
+                <Button mnemonicParsing="false" prefWidth="94.0" text="Twoje wyniki">
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                    </cursor>
+                </Button>
+                <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="122.0" text="Java Quiz" textAlignment="CENTER" textFill="RED">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </items>
+        </ToolBar>
+        <Pane focusTraversable="true" layoutX="51.0" layoutY="226.0" prefHeight="360.0" prefWidth="475.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="51.0" AnchorPane.rightAnchor="349.0" AnchorPane.topAnchor="226.0">
+         <children>
+            <CheckBox layoutX="14.0" layoutY="55.0" mnemonicParsing="false" text="CheckBox">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="14.0" layoutY="101.0" mnemonicParsing="false" text="CheckBox">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="14.0" layoutY="148.0" mnemonicParsing="false" text="CheckBox">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="14.0" layoutY="196.0" mnemonicParsing="false" text="CheckBox">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </CheckBox>
+         </children>
+        </Pane>
+          <Label layoutX="14.0" layoutY="47.0" text="Quiz 1">
+              <font>
+                  <Font size="28.0" />
+              </font>
+          </Label>
+      <Label layoutX="87.0" layoutY="158.0" text="Pytanie">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="785.0" layoutY="47.0" text="czas">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
