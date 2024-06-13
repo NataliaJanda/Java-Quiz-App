@@ -6,6 +6,7 @@ import com.example.javaquizzapp.service.StudentService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Controller;
 
@@ -22,8 +23,8 @@ public class GuiController {
     public GuiController(StudentService studentService) {
         this.studentService = studentService;
     }
-    public TextField passwordField;
-    public TextField repeatPasswordField;
+    public PasswordField passwordField;
+    public PasswordField repeatPasswordField;
     public TextField lastNameField;
     public TextField nameField;
     public TextField indexField;
