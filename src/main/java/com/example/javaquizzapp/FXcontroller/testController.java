@@ -32,8 +32,17 @@ public class testController implements Initializable {
     public Button AboutQuiz;
     public Button UserTestScore;
     public Button Back;
+    public Button Next;
     private List<com.example.javaquizzapp.entity.Question> questions;
     private int currentQuestionIndex = 0;
+
+    public void resetQuiz(){
+        currentQuestionIndex = 0;
+        questions = questionService.getAllQuestionsWithAnswers();
+        if (!questions.isEmpty()) {
+            displayQuestion(questions.get(currentQuestionIndex));
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,6 +76,18 @@ public class testController implements Initializable {
             currentQuestionIndex++;
             displayQuestion(questions.get(currentQuestionIndex));
         }
+        else{
+            try {
+                Stage stage = (Stage) Next.getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/endQuiz.fxml"));
+                fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     private void displayQuestion(Question question) {
         LabelQuestionNumber.setText(String.valueOf(currentQuestionIndex + 1));
@@ -79,17 +100,16 @@ public class testController implements Initializable {
             if (answers.size() > 2) Answer3.setText(answers.get(2).getAnswer());
             if (answers.size() > 3) Answer4.setText(answers.get(3).getAnswer());
         } else {
-            // Możesz ustawić puste teksty, jeśli lista odpowiedzi jest pusta
             Answer1.setText("");
             Answer2.setText("");
             Answer3.setText("");
             Answer4.setText("");
         }
 
-        // Resetowanie zaznaczeń odpowiedzi
         Answer1.setSelected(false);
         Answer2.setSelected(false);
         Answer3.setSelected(false);
         Answer4.setSelected(false);
     }
+
 }

@@ -22,6 +22,9 @@ public class startQuizController {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.show();
+
+            testController quizController = fxmlLoader.getController();
+            quizController.resetQuiz();
         } catch (IOException e) {
             e.printStackTrace();
         }

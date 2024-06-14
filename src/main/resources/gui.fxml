@@ -8,7 +8,6 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javaquizzapp.FXcontroller.GuiController">
@@ -29,45 +28,51 @@
             </Label>
         </items>
       </ToolBar>
-      <Pane focusTraversable="true" layoutX="186.0" layoutY="120.0" prefHeight="360.0" prefWidth="475.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="186.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="120.0">
+      <AnchorPane layoutX="208.0" layoutY="141.0" prefHeight="367.0" prefWidth="459.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="208.0" AnchorPane.rightAnchor="208.0" AnchorPane.topAnchor="141.0">
          <children>
-            <Label layoutX="43.0" layoutY="156.0" text="numer indeksu">
+            <Label layoutX="34.0" layoutY="237.0" text="powtórz hasło" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="100.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="98.0" layoutY="194.0" text="hasło">
+            <Label layoutX="88.0" layoutY="198.0" text="hasło" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="100.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="45.0" layoutY="233.0" text="powtórz hasło">
+            <Label layoutX="34.0" layoutY="160.0" text="numer indeksu" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="300.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button fx:id="Register" layoutX="199.0" layoutY="283.0" mnemonicParsing="false" onAction="#RegisterSubmit" text="Zarejestruj" />
-            <Label layoutX="191.0" layoutY="28.0" text="Rejstracja">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Label>
-            <TextField fx:id="indexField" layoutX="150.0" layoutY="153.0" prefHeight="22.0" prefWidth="233.0" promptText="ineks" />
-            <TextField fx:id="lastNameField" layoutX="150.0" layoutY="119.0" prefHeight="22.0" prefWidth="233.0" promptText="nazwisko" />
-            <TextField fx:id="nameField" layoutX="151.0" layoutY="81.0" prefHeight="22.0" prefWidth="233.0" promptText="imię" />
-            <Label layoutX="77.0" layoutY="122.0" text="nazwisko">
+            <Label layoutX="63.0" layoutY="126.0" text="nazwisko" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="100.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="110.0" layoutY="84.0" text="imię">
+            <Label layoutX="92.0" layoutY="87.0" text="imię" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="100.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="191.0" prefHeight="26.0" prefWidth="233.0" promptText="hasło" />
-            <PasswordField fx:id="repeatPasswordField" layoutX="151.0" layoutY="230.0" prefHeight="26.0" prefWidth="233.0" promptText="hasło" />
+            <BorderPane prefHeight="328.0" prefWidth="462.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <Label text="Rejstracja" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </top>
+               <bottom>
+                  <Button fx:id="Register" mnemonicParsing="false" onAction="#RegisterSubmit" text="Zarejestruj" BorderPane.alignment="BASELINE_CENTER" />
+               </bottom>
+            </BorderPane>
+            <TextField fx:id="indexField" layoutX="132.0" layoutY="156.0" prefHeight="22.0" prefWidth="233.0" promptText="ineks" AnchorPane.leftAnchor="132.0" AnchorPane.rightAnchor="94.0" />
+            <TextField fx:id="lastNameField" layoutX="132.0" layoutY="122.0" prefHeight="22.0" prefWidth="233.0" promptText="nazwisko" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="93.0" />
+            <TextField fx:id="nameField" layoutX="133.0" layoutY="84.0" prefHeight="22.0" prefWidth="233.0" promptText="imię" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="93.0" AnchorPane.topAnchor="84.0" />
+            <PasswordField fx:id="passwordField" layoutX="133.0" layoutY="194.0" prefHeight="26.0" prefWidth="233.0" promptText="hasło" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="93.0" />
+            <PasswordField fx:id="repeatPasswordField" layoutX="133.0" layoutY="233.0" prefHeight="26.0" prefWidth="233.0" promptText="hasło" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="93.0" />
          </children>
-      </Pane>
+      </AnchorPane>
    </children>
 </AnchorPane>
