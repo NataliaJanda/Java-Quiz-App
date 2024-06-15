@@ -15,8 +15,8 @@
       <BorderPane />
       <ToolBar pickOnBounds="false" prefHeight="40.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <items>
-          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Zarejestruj się" />
-            <Button mnemonicParsing="false" prefWidth="94.0" text="Zaloguj się ">
+          <Button fx:id="RegisterPanel" mnemonicParsing="false" onAction="#RegisterButtonPanel" prefHeight="25.0" prefWidth="106.0" text="Zarejestruj się" />
+            <Button fx:id="LoginPanel" mnemonicParsing="false" onAction="#LoginButtonPanel" prefWidth="94.0" text="Zaloguj się ">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>

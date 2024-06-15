@@ -45,17 +45,48 @@ public class DataInitializer {
             Answer answer53 = new Answer(null, "BD", false, question5);
             Answer answer54 = new Answer(null, "AD", false, question5);
             question5.setAnswers(List.of(answer51, answer52, answer53, answer54));
-
-//            questionRepository.save(new Question(null, "Która składnia dostępu do kolekcji ArrayList<String> myList = new ArrayList<String>(); " + "za pomocą pętli for jest poprawna:"));
-//            questionRepository.save(new Question(null, "Wykonanie poniższego programu spowoduje wyświetlenie: "));
-//            questionRepository.save(new Question(null, "Które zapisy referencji do metody i wyrażenia Lambda są równoważne ?"));
-//            questionRepository.save(new Question(null, "Wykonanie poniższego programu spowoduje wyświetlenie:"));
+            Question question6 = (new Question(null, "Która składnia dostępu do kolekcji ArrayList<String> myList = new ArrayList<String>(); " + "za pomocą pętli for jest poprawna:"));
+            Answer answer61 = new Answer(null, "for (int i = 0; i < myList.size(); i++) { System.out.println(myList(i)); }", true, question6);
+            Answer answer62 = new Answer(null, "for (String s : myList) { System.out.println(s); }", false, question6);
+            Answer answer63 = new Answer(null, "for (int s : myList) { System.out.println(s); }", false, question6);
+            Answer answer64 = new Answer(null, "for (int s = 0) { System.out.println(s); }", false, question6);
+            question6.setAnswers(List.of(answer61, answer62, answer63, answer64));
+            Question question7 = (new Question(null, "Wykonanie poniższego programu spowoduje wyświetlenie: "));
+            Answer answer71 = new Answer(null, "List:1List:2List:3" + "List:4List:5List:6", true, question7);
+            Answer answer72 = new Answer(null, "List:123456", false, question7);
+            Answer answer73 = new Answer(null, "error", false, question7);
+            Answer answer74 = new Answer(null, "List:{123456}", false, question7);
+            question7.setAnswers(List.of(answer71, answer72, answer73, answer74));
+            Question question8 = (new Question(null, "Wykonanie poniższego programu spowoduje wyświetlenie:"));
+            Answer answer81 = new Answer(null, "123", true, question8);
+            Answer answer82 = new Answer(null, "Programu nie można uruchomić, ponieważ nie da się skompilować", false, question8);
+            Answer answer83 = new Answer(null, "123.0", false, question8);
+            Answer answer84 = new Answer(null, "Program da się skompilować, a przy wykonaniu zgłosi wyjątek", false, question8);
+            question8.setAnswers(List.of(answer81, answer82, answer83, answer84));
+            Question question9 = (new Question(null, "Które zapisy referencji do metody i wyrażenia Lambda są równoważne ?"));
+            Answer answer91 = new Answer(null, "System.out::println" + "x->System.out.println()", true, question9);
+            Answer answer92 = new Answer(null, "JButton::new" + "() -> new JButton()", false, question9);
+            Answer answer93 = new Answer(null, "int[]::new" + "x->new int[x]", false, question9);
+            Answer answer94 = new Answer(null, "String::valueOf" +"x -> String.valueOf(x)", false, question9);
+            question9.setAnswers(List.of(answer91, answer92, answer93, answer94));
+            Question question10 = (new Question(null, "Głównym elementem pliku AndroidManifest.xml jest ?"));
+            Answer answer101 = new Answer(null, "activity", true, question10);
+            Answer answer102 = new Answer(null, "manifest", false, question10);
+            Answer answer103 = new Answer(null, "application", false, question10);
+            Answer answer104 = new Answer(null, "android", false, question10);
+            question10.setAnswers(List.of(answer101, answer102, answer103, answer104));
 
             questionRepository.save(question1);
             questionRepository.save(question2);
             questionRepository.save(question3);
             questionRepository.save(question4);
             questionRepository.save(question5);
+            questionRepository.save(question6);
+            questionRepository.save(question7);
+            questionRepository.save(question8);
+            questionRepository.save(question9);
+            questionRepository.save(question10);
+
 
         };
     }

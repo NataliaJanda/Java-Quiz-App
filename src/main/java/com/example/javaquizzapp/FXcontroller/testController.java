@@ -4,6 +4,8 @@ import com.example.javaquizzapp.JavaQuizzAppApplication;
 import com.example.javaquizzapp.entity.Answer;
 import com.example.javaquizzapp.entity.Question;
 import com.example.javaquizzapp.service.QuestionService;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -11,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -23,25 +26,28 @@ import java.util.ResourceBundle;
 public class testController implements Initializable {
     @Autowired
     private QuestionService questionService;
-    public Label LabelQuestionNumber;
-    public CheckBox Answer1;
-    public CheckBox Answer2;
-    public CheckBox Answer3;
-    public CheckBox Answer4;
-    public Label Question;
-    public Button AboutQuiz;
-    public Button UserTestScore;
-    public Button Back;
-    public Button Next;
-    private List<com.example.javaquizzapp.entity.Question> questions;
+    public Label LabelQuestionNumber, MaxScore, YourScore, Grade;
+    public CheckBox Answer1, Answer2, Answer3, Answer4;
+    public Label Question, Time;
+    public Button AboutQuiz, UserTestScore;
+    public Button Back, Next;
+    private List<Question> questions;
     private int currentQuestionIndex = 0;
+    public int countOfCorrectAnswers = 0;
+    public double grade=0;
+    private Timeline timer;
+    private long remainingTime;
+
 
     public void resetQuiz(){
         currentQuestionIndex = 0;
+        countOfCorrectAnswers = 0;
+        grade=0;
         questions = questionService.getAllQuestionsWithAnswers();
         if (!questions.isEmpty()) {
             displayQuestion(questions.get(currentQuestionIndex));
         }
+        startTimer();
     }
 
     @Override
@@ -50,9 +56,34 @@ public class testController implements Initializable {
         if (!questions.isEmpty()) {
             displayQuestion(questions.get(currentQuestionIndex));
         }
+        startTimer();
     }
+
+    private void startTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+        remainingTime = 10 * 60; // Initialize remaining time in seconds
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (remainingTime <= 0) {
+                timer.stop();
+                displayResult();
+            } else {
+                remainingTime--;
+                long m = remainingTime / 60;
+                long s = remainingTime % 60;
+                Time.setText(String.format("%02d:%02d", m, s));
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.playFromStart();
+    }
+
     public void BackButton(javafx.event.ActionEvent actionEvent){
         try {
+            if (timer != null) {
+                timer.stop();
+            }
             Stage stage = (Stage) Back.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
             fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
@@ -69,24 +100,34 @@ public class testController implements Initializable {
     public void UserTestScoreButton(javafx.event.ActionEvent actionEvent){}
 
     public void NextButton(javafx.event.ActionEvent actionEvent){
-        int i = Integer.parseInt(LabelQuestionNumber.getText());
-        i++;
-        LabelQuestionNumber.setText(String.valueOf(i));
+        checkAnswers(questions.get(currentQuestionIndex));
         if (currentQuestionIndex < questions.size() - 1) {
             currentQuestionIndex++;
             displayQuestion(questions.get(currentQuestionIndex));
         }
-        else{
-            try {
-                Stage stage = (Stage) Next.getScene().getWindow();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/endQuiz.fxml"));
-                fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-                Scene scene = new Scene(fxmlLoader.load());
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+        else{displayResult();
+        }
+    }
+
+    private void displayResult(){
+        try {
+            if (timer != null) {
+                timer.stop();
             }
+            Stage stage = (Stage) Next.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/endQuiz.fxml"));
+            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+
+            calculateGrade(countOfCorrectAnswers,currentQuestionIndex);
+            Grade.setText(String.valueOf(calculateGrade(countOfCorrectAnswers,currentQuestionIndex)));
+            YourScore.setText(String.valueOf(countOfCorrectAnswers));
+            MaxScore.setText(String.valueOf(currentQuestionIndex+1));
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     private void displayQuestion(Question question) {
@@ -105,11 +146,37 @@ public class testController implements Initializable {
             Answer3.setText("");
             Answer4.setText("");
         }
-
         Answer1.setSelected(false);
         Answer2.setSelected(false);
         Answer3.setSelected(false);
         Answer4.setSelected(false);
+    }
+    public void checkAnswers(Question question){
+        List<Answer> answers = question.getAnswers();
+
+        boolean correct=true;
+        if (answers.size() > 0) correct &= (answers.get(0).isCorrect() == Answer1.isSelected());
+        if (answers.size() > 1) correct &= (answers.get(1).isCorrect() == Answer2.isSelected());
+        if (answers.size() > 2) correct &= (answers.get(2).isCorrect() == Answer3.isSelected());
+        if (answers.size() > 3) correct &= (answers.get(3).isCorrect() == Answer4.isSelected());
+
+        if(correct){
+            countOfCorrectAnswers++;
+        }
+    }
+
+    public double calculateGrade(int score, int maxScore){
+        double percent = ((double) score /maxScore)*100;
+        double grade;
+
+        if(percent>=90) grade = 5;
+        else if(percent>=85 ) grade =4.5;
+        else if(percent>=75 ) grade =4;
+        else if(percent>=65 ) grade=3.5;
+        else if(percent>=60 ) grade=3;
+        else grade=2;
+
+        return grade;
     }
 
 }
