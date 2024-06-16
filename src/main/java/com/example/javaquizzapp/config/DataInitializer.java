@@ -2,7 +2,9 @@ package com.example.javaquizzapp.config;
 
 import com.example.javaquizzapp.entity.Answer;
 import com.example.javaquizzapp.entity.Question;
+import com.example.javaquizzapp.entity.Student;
 import com.example.javaquizzapp.repository.QuestionRepository;
+import com.example.javaquizzapp.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,7 @@ import java.util.List;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(QuestionRepository questionRepository) {
+    CommandLineRunner initDatabase(QuestionRepository questionRepository, StudentRepository studentRepository) {
         return args -> {
             Question question1 = (new Question(null, "W wyniku kompilacji kodu źródłowego Java otrzymano między innymi pliki Class$1.class, Class$2.class. " + "Dlaczego w nazwach plików klasowych po znaku $ są liczby 1 i 2:"));
             Answer answer11 = new Answer(null, "Ponieważ klasa zawierała dwie klasy wewnętrzne o nazwach 1 i 2 ", true, question1);
@@ -75,6 +77,8 @@ public class DataInitializer {
             Answer answer103 = new Answer(null, "application", false, question10);
             Answer answer104 = new Answer(null, "android", false, question10);
             question10.setAnswers(List.of(answer101, answer102, answer103, answer104));
+
+            studentRepository.save(new Student(1L,"169548","Natalia", "Janda","root"));
 
             questionRepository.save(question1);
             questionRepository.save(question2);

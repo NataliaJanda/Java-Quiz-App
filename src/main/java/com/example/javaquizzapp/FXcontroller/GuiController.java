@@ -3,12 +3,15 @@ package com.example.javaquizzapp.FXcontroller;
 import com.example.javaquizzapp.JavaQuizzAppApplication;
 import com.example.javaquizzapp.entity.Student;
 import com.example.javaquizzapp.repository.StudentRepository;
+import com.example.javaquizzapp.service.CurrentStudentService;
 import com.example.javaquizzapp.service.StudentService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.awt.*;
@@ -20,8 +23,12 @@ import javafx.scene.control.Button;
 @Controller
 public class GuiController {
     private final StudentService studentService;
-    public GuiController(StudentService studentService) {
+    private final StudentRepository studentRepository;
+    private final CurrentStudentService currentStudentService;
+    public GuiController(StudentService studentService, StudentRepository studentRepository, CurrentStudentService currentStudentService) {
         this.studentService = studentService;
+        this.studentRepository = studentRepository;
+        this.currentStudentService = currentStudentService;
     }
     public PasswordField passwordField;
     public PasswordField repeatPasswordField;
@@ -31,6 +38,9 @@ public class GuiController {
     public Button Register, RegisterPanel, LoginPanel;
     @FXML
     private Label label1;
+    @Autowired
+    @Lazy
+    public testController testController;
 
     public void RegisterSubmit(javafx.event.ActionEvent actionEvent) {
         String index = indexField.getText();
@@ -38,7 +48,6 @@ public class GuiController {
         String repeatPassword = repeatPasswordField.getText();
         String name = nameField.getText();
         String lastName = lastNameField.getText();
-//      System.out.println(index);
         if (!password.equals(repeatPassword)) {
             System.out.println("Passwords do not match!");
             return;

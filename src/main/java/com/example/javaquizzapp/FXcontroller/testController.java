@@ -3,7 +3,13 @@ package com.example.javaquizzapp.FXcontroller;
 import com.example.javaquizzapp.JavaQuizzAppApplication;
 import com.example.javaquizzapp.entity.Answer;
 import com.example.javaquizzapp.entity.Question;
+import com.example.javaquizzapp.entity.Student;
+import com.example.javaquizzapp.entity.Test;
+import com.example.javaquizzapp.repository.StudentRepository;
+import com.example.javaquizzapp.service.CurrentStudentService;
 import com.example.javaquizzapp.service.QuestionService;
+import com.example.javaquizzapp.service.StudentService;
+import com.example.javaquizzapp.service.TestService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -25,20 +32,32 @@ import java.util.ResourceBundle;
 @Controller
 public class testController implements Initializable {
     @Autowired
-    private QuestionService questionService;
-    public Label LabelQuestionNumber, MaxScore, YourScore, Grade;
+    public QuestionService questionService;
+    @Autowired
+    @Lazy
+    private StudentService studentService;
+    @Autowired
+    private CurrentStudentService currentStudentService;
+    private final TestService testService;
+    private final StudentRepository studentRepository;
+    public Label LabelQuestionNumber, MaxScore, YourScore, Grade,Question, Time;
     public CheckBox Answer1, Answer2, Answer3, Answer4;
-    public Label Question, Time;
-    public Button AboutQuiz, UserTestScore;
-    public Button Back, Next;
+    public Button AboutQuiz, UserTestScore,Back, Next;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     public int countOfCorrectAnswers = 0;
     public double grade=0;
     private Timeline timer;
     private long remainingTime;
+    public int shotNumber = 0;
+    private Student currentStudent;
+    private int index;
 
-
+    @Autowired
+    public testController(TestService testService, StudentRepository studentRepository) {
+        this.testService = testService;
+        this.studentRepository = studentRepository;
+    }
     public void resetQuiz(){
         currentQuestionIndex = 0;
         countOfCorrectAnswers = 0;
@@ -52,18 +71,30 @@ public class testController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        shotNumber ++;
+        System.out.println(shotNumber/2);
         questions = questionService.getAllQuestionsWithAnswers();
         if (!questions.isEmpty()) {
             displayQuestion(questions.get(currentQuestionIndex));
         }
         startTimer();
+        currentStudent = studentService.getCurrentStudent();
+        if (currentStudent != null) {
+            System.out.println("Zalogowany student w testController: " + index);
+        } else {
+            System.out.println("Brak zalogowanego studenta w testController");
+        }
+    }
+
+    public void getCurrentIndex(int index){
+        this.index = index;
     }
 
     private void startTimer() {
         if (timer != null) {
             timer.stop();
         }
-        remainingTime = 10 * 60; // Initialize remaining time in seconds
+        remainingTime = 10 * 60;
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (remainingTime <= 0) {
                 timer.stop();
@@ -95,9 +126,33 @@ public class testController implements Initializable {
         }
     }
 
-    public void AboutQuizButton(javafx.event.ActionEvent actionEvent){}
+    public void AboutQuizButton(javafx.event.ActionEvent actionEvent){
+        try {
+            Stage stage = (Stage) Next.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AboutQuiz.fxml"));
+            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
 
-    public void UserTestScoreButton(javafx.event.ActionEvent actionEvent){}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UserTestScoreButton(javafx.event.ActionEvent actionEvent){
+        try {
+            Stage stage = (Stage) Next.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UserTestScore.fxml"));
+            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void NextButton(javafx.event.ActionEvent actionEvent){
         checkAnswers(questions.get(currentQuestionIndex));
@@ -105,9 +160,8 @@ public class testController implements Initializable {
             currentQuestionIndex++;
             displayQuestion(questions.get(currentQuestionIndex));
         }
-        else{displayResult();
+        else{displayResult();}
         }
-    }
 
     private void displayResult(){
         try {
@@ -125,6 +179,16 @@ public class testController implements Initializable {
             Grade.setText(String.valueOf(calculateGrade(countOfCorrectAnswers,currentQuestionIndex)));
             YourScore.setText(String.valueOf(countOfCorrectAnswers));
             MaxScore.setText(String.valueOf(currentQuestionIndex+1));
+
+            String score = YourScore.getText();
+            String max = MaxScore.getText();
+            String grade = Grade.getText();
+            int shot = shotNumber/2;
+
+            Student currentStudent = currentStudentService.getCurrentStudent();
+            Test test = new Test(null,shot,score,max,grade,currentStudent);
+            test.setStudent(currentStudent);
+            testService.saveTest(test);
 
         } catch (IOException e) {
             e.printStackTrace();

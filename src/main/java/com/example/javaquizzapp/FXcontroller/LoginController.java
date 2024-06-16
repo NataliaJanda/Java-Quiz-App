@@ -1,7 +1,6 @@
 package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
-import com.example.javaquizzapp.repository.StudentRepository;
 import com.example.javaquizzapp.service.StudentService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,11 +25,11 @@ public class LoginController {
     public PasswordField passwordLoginField;
     public Label errorMessage;
 
-    public void LoginSubmit(){
+    public void LoginSubmit() {
         String index = indexLoginField.getText();
         String password = passwordLoginField.getText();
 
-        if(studentService.validateStudent(index,password)){
+        if (studentService.validateStudent(index, password)) {
             try {
                 Stage stage = (Stage) Login.getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
@@ -40,9 +39,9 @@ public class LoginController {
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
+                errorMessage.setText("Wystąpił błąd podczas ładowania nowego widoku.");
             }
-        }
-        else {
+        } else {
             errorMessage.setText("Niepoprawny index lub hasło");
         }
     }
