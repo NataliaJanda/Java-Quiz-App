@@ -1,8 +1,12 @@
 package com.example.javaquizzapp.service;
 
 import com.example.javaquizzapp.entity.Student;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+@Getter
+@Setter
 @Service
 public class CurrentStudentService {
 
@@ -15,4 +19,5 @@ public class CurrentStudentService {
     public void setCurrentStudent(Student currentStudent) {
         this.currentStudent = currentStudent;
     }
+
 }

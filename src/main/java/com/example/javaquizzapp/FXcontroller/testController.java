@@ -1,11 +1,7 @@
 package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
-import com.example.javaquizzapp.entity.Answer;
-import com.example.javaquizzapp.entity.Question;
-import com.example.javaquizzapp.entity.Student;
-import com.example.javaquizzapp.entity.Test;
-import com.example.javaquizzapp.repository.StudentRepository;
+import com.example.javaquizzapp.entity.*;
 import com.example.javaquizzapp.service.CurrentStudentService;
 import com.example.javaquizzapp.service.QuestionService;
 import com.example.javaquizzapp.service.StudentService;
@@ -39,7 +35,6 @@ public class testController implements Initializable {
     @Autowired
     private CurrentStudentService currentStudentService;
     private final TestService testService;
-    private final StudentRepository studentRepository;
     public Label LabelQuestionNumber, MaxScore, YourScore, Grade,Question, Time;
     public CheckBox Answer1, Answer2, Answer3, Answer4;
     public Button AboutQuiz, UserTestScore,Back, Next;
@@ -51,18 +46,17 @@ public class testController implements Initializable {
     private long remainingTime;
     public int shotNumber = 0;
     private Student currentStudent;
-    private int index;
+    public int index;
 
     @Autowired
-    public testController(TestService testService, StudentRepository studentRepository) {
+    public testController(TestService testService) {
         this.testService = testService;
-        this.studentRepository = studentRepository;
     }
     public void resetQuiz(){
         currentQuestionIndex = 0;
         countOfCorrectAnswers = 0;
         grade=0;
-        questions = questionService.getAllQuestionsWithAnswers();
+        questions = questionService.getRandomQuestions(10);
         if (!questions.isEmpty()) {
             displayQuestion(questions.get(currentQuestionIndex));
         }
@@ -73,7 +67,7 @@ public class testController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         shotNumber ++;
         System.out.println(shotNumber/2);
-        questions = questionService.getAllQuestionsWithAnswers();
+        questions = questionService.getRandomQuestions(10);
         if (!questions.isEmpty()) {
             displayQuestion(questions.get(currentQuestionIndex));
         }
@@ -84,10 +78,6 @@ public class testController implements Initializable {
         } else {
             System.out.println("Brak zalogowanego studenta w testController");
         }
-    }
-
-    public void getCurrentIndex(int index){
-        this.index = index;
     }
 
     private void startTimer() {
@@ -111,18 +101,36 @@ public class testController implements Initializable {
     }
 
     public void BackButton(javafx.event.ActionEvent actionEvent){
-        try {
-            if (timer != null) {
-                timer.stop();
+        Student currentStudent = currentStudentService.getCurrentStudent();
+        if (currentStudent.getRole() == Roles.STUDENT) {
+            try {
+                if (timer != null) {
+                    timer.stop();
+                }
+                Stage stage = (Stage) Back.getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
+                fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            Stage stage = (Stage) Back.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
-            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        else {
+            try {
+                if (timer != null) {
+                    timer.stop();
+                }
+                Stage stage = (Stage) Back.getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AdminGui.fxml"));
+                fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -200,7 +208,7 @@ public class testController implements Initializable {
 
         List<Answer> answers = question.getAnswers();
         if (!answers.isEmpty()) {
-            if (answers.size() > 0) Answer1.setText(answers.get(0).getAnswer());
+            Answer1.setText(answers.get(0).getAnswer());
             if (answers.size() > 1) Answer2.setText(answers.get(1).getAnswer());
             if (answers.size() > 2) Answer3.setText(answers.get(2).getAnswer());
             if (answers.size() > 3) Answer4.setText(answers.get(3).getAnswer());
@@ -219,7 +227,7 @@ public class testController implements Initializable {
         List<Answer> answers = question.getAnswers();
 
         boolean correct=true;
-        if (answers.size() > 0) correct &= (answers.get(0).isCorrect() == Answer1.isSelected());
+        if (!answers.isEmpty()) correct &= (answers.get(0).isCorrect() == Answer1.isSelected());
         if (answers.size() > 1) correct &= (answers.get(1).isCorrect() == Answer2.isSelected());
         if (answers.size() > 2) correct &= (answers.get(2).isCorrect() == Answer3.isSelected());
         if (answers.size() > 3) correct &= (answers.get(3).isCorrect() == Answer4.isSelected());

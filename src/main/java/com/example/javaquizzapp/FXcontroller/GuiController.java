@@ -1,11 +1,9 @@
 package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
+import com.example.javaquizzapp.entity.Roles;
 import com.example.javaquizzapp.entity.Student;
-import com.example.javaquizzapp.repository.StudentRepository;
-import com.example.javaquizzapp.service.CurrentStudentService;
 import com.example.javaquizzapp.service.StudentService;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import java.awt.*;
 import java.io.IOException;
 
 import javafx.scene.control.TextField;
@@ -23,12 +20,8 @@ import javafx.scene.control.Button;
 @Controller
 public class GuiController {
     private final StudentService studentService;
-    private final StudentRepository studentRepository;
-    private final CurrentStudentService currentStudentService;
-    public GuiController(StudentService studentService, StudentRepository studentRepository, CurrentStudentService currentStudentService) {
+    public GuiController(StudentService studentService) {
         this.studentService = studentService;
-        this.studentRepository = studentRepository;
-        this.currentStudentService = currentStudentService;
     }
     public PasswordField passwordField;
     public PasswordField repeatPasswordField;
@@ -36,8 +29,6 @@ public class GuiController {
     public TextField nameField;
     public TextField indexField;
     public Button Register, RegisterPanel, LoginPanel;
-    @FXML
-    private Label label1;
     @Autowired
     @Lazy
     public testController testController;
@@ -48,12 +39,13 @@ public class GuiController {
         String repeatPassword = repeatPasswordField.getText();
         String name = nameField.getText();
         String lastName = lastNameField.getText();
+        Roles roles = Roles.STUDENT;
         if (!password.equals(repeatPassword)) {
             System.out.println("Passwords do not match!");
             return;
         }
 
-        Student student = new Student(null, index, name, lastName, password);
+        Student student = new Student(null, index, name, lastName, password,roles);
         studentService.registerStudent(student);
         System.out.println("Student registered successfully!");
         try {

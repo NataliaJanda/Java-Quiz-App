@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -33,6 +31,8 @@ public class Test {
     }
 
     public Test() {
-
+    }
+    public String getStudentIndex() {
+        return student != null ? student.getIndex() : null;
     }
 }

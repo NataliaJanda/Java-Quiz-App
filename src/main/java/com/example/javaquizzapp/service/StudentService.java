@@ -1,6 +1,7 @@
 package com.example.javaquizzapp.service;
 
 import com.example.javaquizzapp.FXcontroller.testController;
+import com.example.javaquizzapp.entity.Roles;
 import com.example.javaquizzapp.entity.Student;
 import com.example.javaquizzapp.repository.StudentRepository;
 import lombok.Getter;
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StudentService {
 
+    @Autowired
     private final StudentRepository studentRepository;
     private final CurrentStudentService currentStudentService;
 
@@ -22,6 +25,11 @@ public class StudentService {
     @Autowired
     @Lazy
     public testController testController;
+
+
+    public List<Student> findAllStudents() {
+        return studentRepository.findAll();
+    }
 
     @Autowired
     public StudentService(StudentRepository studentRepository, CurrentStudentService currentStudentService) {
@@ -40,11 +48,8 @@ public class StudentService {
         Optional<Student> studentOptional = studentRepository.findByIndexAndPassword(index, password);
         if (studentOptional.isPresent()) {
             Student currentStudent = studentOptional.get();
-            int i = Integer.parseInt(currentStudent.getIndex());
-            testController.getCurrentIndex(i);
             currentStudentService.setCurrentStudent(currentStudent);
 
-            System.out.println("Zalogowany student: " + i + " " + currentStudent.getName());
             return true;
         }
         return false;

@@ -1,6 +1,9 @@
 package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
+import com.example.javaquizzapp.entity.Roles;
+import com.example.javaquizzapp.entity.Student;
+import com.example.javaquizzapp.service.CurrentStudentService;
 import com.example.javaquizzapp.service.StudentService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +20,8 @@ import java.io.IOException;
 @Controller
 
 public class LoginController {
-
+    @Autowired
+    private CurrentStudentService currentStudentService;
     @Autowired
     private StudentService studentService;
     public Button RegisterF, LoginF, Login;
@@ -28,48 +32,61 @@ public class LoginController {
     public void LoginSubmit() {
         String index = indexLoginField.getText();
         String password = passwordLoginField.getText();
+            if (studentService.validateStudent(index, password)) {
+                Student currentStudent = currentStudentService.getCurrentStudent();
+                if (currentStudent.getRole() == Roles.STUDENT) {
+                    try {
+                        Stage stage = (Stage) Login.getScene().getWindow();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
+                        fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                        Scene scene = new Scene(fxmlLoader.load());
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        errorMessage.setText("Wystąpił błąd podczas ładowania nowego widoku.");
+                    }
+                }
+                else {
+                    try {
+                        Stage stage = (Stage) Login.getScene().getWindow();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AdminGui.fxml"));
+                        fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                        Scene scene = new Scene(fxmlLoader.load());
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                errorMessage.setText("Niepoprawny index lub hasło");
+            }
+    }
 
-        if (studentService.validateStudent(index, password)) {
+        public void RegisterButtonF () {
             try {
                 Stage stage = (Stage) Login.getScene().getWindow();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/startQuiz.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui.fxml"));
                 fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
                 Scene scene = new Scene(fxmlLoader.load());
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
-                errorMessage.setText("Wystąpił błąd podczas ładowania nowego widoku.");
             }
-        } else {
-            errorMessage.setText("Niepoprawny index lub hasło");
+        }
+
+        public void LoginButtonF () {
+            try {
+                Stage stage = (Stage) Login.getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/login.fxml"));
+                fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
-
-    public void RegisterButtonF(){
-        try {
-            Stage stage = (Stage) Login.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui.fxml"));
-            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void LoginButtonF(){
-        try {
-            Stage stage = (Stage) Login.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/login.fxml"));
-            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-}
