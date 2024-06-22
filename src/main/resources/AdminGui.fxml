@@ -14,6 +14,11 @@
         <BorderPane />
         <ToolBar pickOnBounds="false" prefHeight="40.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <items>
+            <Button fx:id="Logout" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#LogoutButton" prefHeight="25.0" prefWidth="69.0" text="Wyloguj">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Button>
                 <Button fx:id="TestScoreUsers" mnemonicParsing="false" onAction="#TestScoreUsersButton" prefHeight="25.0" prefWidth="106.0" text="Wyniki testów" />
                 <Button fx:id="AddQuestion" mnemonicParsing="false" onAction="#AddQuestionButton" prefWidth="94.0" text="Dodaj pytanie">
                     <cursor>

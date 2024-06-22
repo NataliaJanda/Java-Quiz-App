@@ -14,14 +14,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,7 +41,7 @@ public class testController implements Initializable {
     private final TestService testService;
     public Label LabelQuestionNumber, MaxScore, YourScore, Grade,Question, Time;
     public CheckBox Answer1, Answer2, Answer3, Answer4;
-    public Button AboutQuiz, UserTestScore,Back, Next;
+    public Button Back, Next;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     public int countOfCorrectAnswers = 0;
@@ -47,6 +51,8 @@ public class testController implements Initializable {
     public int shotNumber = 0;
     private Student currentStudent;
     public int index;
+    public ImageView questionImageView;
+
 
     @Autowired
     public testController(TestService testService) {
@@ -134,33 +140,6 @@ public class testController implements Initializable {
         }
     }
 
-    public void AboutQuizButton(javafx.event.ActionEvent actionEvent){
-        try {
-            Stage stage = (Stage) Next.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AboutQuiz.fxml"));
-            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void UserTestScoreButton(javafx.event.ActionEvent actionEvent){
-        try {
-            Stage stage = (Stage) Next.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/UserTestScore.fxml"));
-            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void NextButton(javafx.event.ActionEvent actionEvent){
         checkAnswers(questions.get(currentQuestionIndex));
@@ -217,6 +196,16 @@ public class testController implements Initializable {
             Answer2.setText("");
             Answer3.setText("");
             Answer4.setText("");
+        }
+
+        if (question.getImageData() != null && !question.getImageData().isEmpty()) {
+            byte[] imageBytes = Base64.getDecoder().decode(question.getImageData());
+            Image image = new Image(new ByteArrayInputStream(imageBytes));
+            questionImageView.setImage(image);
+            questionImageView.setVisible(true);
+        } else {
+            questionImageView.setImage(null);
+            questionImageView.setVisible(false);
         }
         Answer1.setSelected(false);
         Answer2.setSelected(false);

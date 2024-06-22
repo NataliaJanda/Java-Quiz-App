@@ -1,10 +1,13 @@
 package com.example.javaquizzapp.FXcontroller;
 
 import com.example.javaquizzapp.JavaQuizzAppApplication;
+import com.example.javaquizzapp.service.CurrentStudentService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -12,6 +15,9 @@ import java.io.IOException;
 @Controller
 public class AdminGuiController {
     public Button start, TestScoreUsers, AddQuestion, Users;
+    public Button Logout;
+    @Autowired
+    private CurrentStudentService currentStudentService;
 
     public void TestScoreUsersButton(){
         try {
@@ -66,6 +72,22 @@ public class AdminGuiController {
 
             testController quizController = fxmlLoader.getController();
             quizController.resetQuiz();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void LogoutButton(ActionEvent actionEvent) {
+
+        currentStudentService.clearCurrentStudent();
+        try {
+            Stage stage = (Stage) Logout.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            fxmlLoader.setControllerFactory(JavaQuizzAppApplication.getSpringContext()::getBean);
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

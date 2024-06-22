@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -10,12 +11,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javaquizzapp.FXcontroller.startQuizController">
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javaquizzapp.FXcontroller.UserTestScoreController">
     <children>
         <BorderPane />
         <ToolBar pickOnBounds="false" prefHeight="40.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <items>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="O Quizie" />
                 <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="122.0" text="Java Quiz" textAlignment="CENTER" textFill="RED">
                     <font>
                         <Font size="24.0" />
@@ -23,17 +23,26 @@
                 </Label>
             </items>
         </ToolBar>
-        <Pane focusTraversable="true" layoutX="29.0" layoutY="38.0" prefHeight="532.0" prefWidth="874.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="38.0">
+        <Pane focusTraversable="true" layoutX="29.0" layoutY="38.0" prefHeight="502.0" prefWidth="874.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="38.0">
          <children>
-            <TableView layoutX="14.0" layoutY="14.0" prefHeight="509.0" prefWidth="834.0">
+            <TableView fx:id="UserScoreTable" layoutX="14.0" layoutY="14.0" prefHeight="480.0" prefWidth="834.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="Test" />
-                <TableColumn prefWidth="75.0" text="Twój wynik" />
-                  <TableColumn prefWidth="75.0" text="Maks" />
-                  <TableColumn prefWidth="75.0" text="Ocena" />
+                <TableColumn fx:id="test_id" prefWidth="75.0" text="Test" />
+                <TableColumn fx:id="YourScore" prefWidth="75.0" text="Twój wynik" />
+                  <TableColumn fx:id="MaxScore" prefWidth="75.0" text="Maks" />
+                  <TableColumn fx:id="Grade" prefWidth="75.0" text="Ocena" />
               </columns>
             </TableView>
          </children>
         </Pane>
+        <AnchorPane layoutY="550.0" prefHeight="50.0" prefWidth="900.0">
+            <children>
+                <Button fx:id="Back" layoutX="26.0" layoutY="12.0" mnemonicParsing="false" onAction="#BackButton" prefHeight="25.0" prefWidth="130.0" text="&lt;-- Wróć do menu">
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                    </cursor>
+                </Button>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

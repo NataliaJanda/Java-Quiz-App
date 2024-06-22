@@ -9,13 +9,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,8 +30,14 @@ public class AddQuestionController implements Initializable {
     public TextField answer1Field,answer2Field,answer3Field,answer4Field;
     public ChoiceBox<String> ChoiceBoxAns2,ChoiceBoxAns1,ChoiceBoxAns3,ChoiceBoxAns4;
     public Label InfoLabel;
+
+    public Button selectImageButton;
+    private FileChooser imageFileChooser;
+    private File selectedImageFile;
     private final String[] PF = {"prawda","fałsz"};
     public TextArea questionField;
+    public Label imagePathLabel;
+
     public Button AddingQuestion;
     @Autowired
     private QuestionService questionService;
@@ -35,12 +46,29 @@ public class AddQuestionController implements Initializable {
         ChoiceBoxAns2.getItems().addAll(PF);
         ChoiceBoxAns3.getItems().addAll(PF);
         ChoiceBoxAns4.getItems().addAll(PF);
+        imageFileChooser = new FileChooser();
+        imageFileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+        );
+    }
+    public void selectImageFile(ActionEvent actionEvent) {
+        selectedImageFile = imageFileChooser.showOpenDialog(null);
+        if (selectedImageFile != null) {
+            imagePathLabel.setText(selectedImageFile.getName());
+        } else {
+            imagePathLabel.setText("");
+        }
     }
     public void AddingQuestionButton(ActionEvent actionEvent) {
         try {
             String questionText = questionField.getText();
             Question question = new Question();
             question.setQuestion(questionText);
+
+            if (selectedImageFile != null) {
+                String base64Image = encodeFileToBase64(selectedImageFile);
+                question.setImageData(base64Image);
+            }
 
             List<Answer> answers = new ArrayList<>();
             answers.add(new Answer(null, answer1Field.getText(), ChoiceBoxAns1.getValue().equals("prawda"), question));
@@ -63,6 +91,10 @@ public class AddQuestionController implements Initializable {
             ChoiceBoxAns2.setValue(null);
             ChoiceBoxAns3.setValue(null);
             ChoiceBoxAns4.setValue(null);
+            selectedImageFile = null;
+            imagePathLabel = null;
+            InfoLabel = null;
+
         } catch (Exception e) {
             InfoLabel.setText("Wystąpił błąd podczas dodawania pytania.");
             e.printStackTrace();
@@ -81,6 +113,11 @@ public class AddQuestionController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    private String encodeFileToBase64(File file) throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] fileBytes = IOUtils.toByteArray(fileInputStream);
+            return Base64.getEncoder().encodeToString(fileBytes);
+        }
+    }
 
 }

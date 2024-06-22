@@ -18,6 +18,9 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Answer> answers;
+    @Lob
+    private String imageData;
+
     public Question(Long id, String question){
         this.id = id;
         this.question = question;

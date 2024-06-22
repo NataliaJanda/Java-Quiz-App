@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToolBar?>
@@ -21,12 +20,6 @@
         </AnchorPane>
         <ToolBar pickOnBounds="false" prefHeight="40.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <items>
-                <Button fx:id="AboutQuiz" mnemonicParsing="false" onAction="#AboutQuizButton" prefHeight="25.0" prefWidth="106.0" text="O Quizie" />
-                <Button fx:id="UserTestScore" mnemonicParsing="false" onAction="#UserTestScoreButton" prefWidth="94.0" text="Twoje wyniki">
-                    <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                    </cursor>
-                </Button>
                 <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="122.0" text="Java Quiz" textAlignment="CENTER" textFill="RED">
                     <font>
                         <Font size="24.0" />

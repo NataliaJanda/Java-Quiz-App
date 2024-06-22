@@ -19,5 +19,7 @@ public class CurrentStudentService {
     public void setCurrentStudent(Student currentStudent) {
         this.currentStudent = currentStudent;
     }
-
+    public void clearCurrentStudent() {
+        this.currentStudent = null;
+    }
 }
